@@ -356,7 +356,7 @@ namespace QO_100_WB_Quick_Tune
             {
                 this.Invoke(new MethodInvoker(delegate () { spectrum.Image = bmp; spectrum.Update(); }));
             }
-            catch ( Exception Ex )
+            catch (Exception)
             {
 
             }
