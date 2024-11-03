@@ -784,10 +784,7 @@ namespace QO_100_WB_Quick_Tune
 
         private void button2_Click(object sender, EventArgs e)
         {
-            IPAddress address;
-            int _port;
-            int _lo;
-            if (IPAddress.TryParse(mt_ip.Text, out address) & int.TryParse(mt_port.Text, out _port) & int.TryParse(mt_lnb_offset.Text, out _lo))
+            if (IPAddress.TryParse(mt_ip.Text, out IPAddress address) & int.TryParse(mt_port.Text, out int _port) & int.TryParse(mt_lnb_offset.Text, out int _lo))
             {
                 port = _port;
                 lo = _lo;
@@ -826,27 +823,24 @@ namespace QO_100_WB_Quick_Tune
 
         private void button1_Click(object sender, EventArgs e)
         {
-           
-                IPAddress address;
-                int _port;
-                int _lo;
-                if (IPAddress.TryParse(wh_ip.Text, out address) & int.TryParse(wh_port.Text, out _port) & int.TryParse(wh_lnb_offset.Text, out _lo))
-                {
-                    port = _port;
-                    lo = _lo;
-                    ip = address.ToString();
-                    rxsocket = wh_rxsocket.Text;
-                    lnbvolts = wh_lnbvolts.Text;
-                    dvbmode = "-";
-                    lnb22khz = wh_22KHz.Text;
-                    widescan = "-"; ;
-                    lowsr = "-";
-                    rx_added = "WinterHill";
-                    this.Hide();
-                }
+
+            if (IPAddress.TryParse(wh_ip.Text, out IPAddress address) & int.TryParse(wh_port.Text, out int _port) & int.TryParse(wh_lnb_offset.Text, out int _lo))
+            {
+                port = _port;
+                lo = _lo;
+                ip = address.ToString();
+                rxsocket = wh_rxsocket.Text;
+                lnbvolts = wh_lnbvolts.Text;
+                dvbmode = "-";
+                lnb22khz = wh_22KHz.Text;
+                widescan = "-"; ;
+                lowsr = "-";
+                rx_added = "WinterHill";
+                this.Hide();
+            }
 
 
-            
+
         }
 
         private void AddRxForm_Load_1(object sender, EventArgs e)
