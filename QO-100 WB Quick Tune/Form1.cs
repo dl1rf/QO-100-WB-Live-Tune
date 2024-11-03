@@ -1079,11 +1079,12 @@ namespace QO_100_WB_Quick_Tune
 
         private void btnChatFontSettings_Click(object sender, EventArgs e)
         {
-            FontDialog fontDialog = new FontDialog();
-
-            fontDialog.ShowEffects = false;
-            fontDialog.ShowHelp = false;
-            fontDialog.Font = chatForm.lbChat.Font;
+            FontDialog fontDialog = new FontDialog
+            {
+                ShowEffects = false,
+                ShowHelp = false,
+                Font = chatForm.lbChat.Font
+            };
 
             if (fontDialog.ShowDialog() == DialogResult.OK)
             {
