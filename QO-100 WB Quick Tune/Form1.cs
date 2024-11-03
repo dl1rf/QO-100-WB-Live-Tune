@@ -480,39 +480,42 @@ namespace QO_100_WB_Quick_Tune
             {
                 if (tunemode=="force")
                 {
-                    int sr = 0;
-                    int freq = Convert.ToInt32((10490.5 + (X / 922.0) * 9.0) * 1000.0);
+                    int rx = determine_rx(Y);   //find receiver by vertical position clicked
 
-                    bool ontop = false;
-                    if (checkBox_ontop.Checked)
+                    if (rx < RxList.Items.Count)
                     {
-                        ontop = true;
-                        checkBox_ontop.Checked = false;
-                    }
+                        int sr = 0;
+                        int freq = Convert.ToInt32((10490.5 + (X / 922.0) * 9.0) * 1000.0);
 
-                    using (SRForm edit = new SRForm(freq))      //open up the manual sr select form
-                    {
-                        edit.ShowDialog();
-                        sr = edit.getsr();
-                    }
+                        bool ontop = false;
+                        if (checkBox_ontop.Checked)
+                        {
+                            ontop = true;
+                            checkBox_ontop.Checked = false;
+                        }
 
-                    checkBox_ontop.Checked = ontop;
+                        using (SRForm edit = new SRForm(freq))      //open up the manual sr select form
+                        {
+                            edit.ShowDialog();
+                            sr = edit.getsr();
+                        }
 
-                    int rx;
-                    rx = determine_rx(Y);   //find receiver by vertical position clicked 
-                    rx_blocks[rx, 0] = X;
-                    rx_blocks[rx, 1] = Convert.ToInt16((sr / 9000.0) * 922);
-                    rx_blocks[rx, 2] = rx;
-                    sigs.set_tuned(new signal.Sig(0,0,X,0,freq,(float)sr/1000), rx);
+                        checkBox_ontop.Checked = ontop;
 
-                    //send tune commands
-                    if (RxList.Items[rx].SubItems[9].Text == "Minitioune" | RxList.Items[rx].SubItems[9].Text == "WinterHill")
-                    {
-                        tune_minitioune(rx, freq, sr);
-                    }
-                    if (RxList.Items[rx].SubItems[9].Text == "Ryde")
-                    {
-                        tune_ryde(freq, sr, IPAddress.Parse(RxList.Items[rx].SubItems[0].Text), Convert.ToInt16(RxList.Items[rx].SubItems[1].Text), RxList.Items[rx].SubItems[10].Text);
+                        rx_blocks[rx, 0] = X;
+                        rx_blocks[rx, 1] = Convert.ToInt16((sr / 9000.0) * 922);
+                        rx_blocks[rx, 2] = rx;
+                        sigs.set_tuned(new signal.Sig(0, 0, X, 0, freq, (float)sr / 1000), rx);
+
+                        //send tune commands
+                        if (RxList.Items[rx].SubItems[9].Text == "Minitioune" | RxList.Items[rx].SubItems[9].Text == "WinterHill")
+                        {
+                            tune_minitioune(rx, freq, sr);
+                        }
+                        if (RxList.Items[rx].SubItems[9].Text == "Ryde")
+                        {
+                            tune_ryde(freq, sr, IPAddress.Parse(RxList.Items[rx].SubItems[0].Text), Convert.ToInt16(RxList.Items[rx].SubItems[1].Text), RxList.Items[rx].SubItems[10].Text);
+                        }
                     }
                 }
 
@@ -533,22 +536,25 @@ namespace QO_100_WB_Quick_Tune
                                 {
                                     rx = determine_rx(Y);   //else find receiver by vertical position clicked
                                 }
-                                
-                                sigs.set_tuned(s, rx);
-                                rx_blocks[rx, 0] = Convert.ToInt16(s.fft_centre);
-                                rx_blocks[rx, 1] = Convert.ToInt16(s.fft_stop - s.fft_start);
-                                rx_blocks[rx, 2] = rx;
-                                int freq = Convert.ToInt32((s.frequency) * 1000);
-                                int sr = Convert.ToInt32((s.sr * 1000.0));
-                                    
-                                if (RxList.Items[rx].SubItems[9].Text == "Minitioune" | RxList.Items[rx].SubItems[9].Text == "WinterHill")
+
+                                if (rx < RxList.Items.Count)
                                 {
-                                    tune_minitioune(rx,freq,sr);
+                                    sigs.set_tuned(s, rx);
+                                    rx_blocks[rx, 0] = Convert.ToInt16(s.fft_centre);
+                                    rx_blocks[rx, 1] = Convert.ToInt16(s.fft_stop - s.fft_start);
+                                    rx_blocks[rx, 2] = rx;
+                                    int freq = Convert.ToInt32((s.frequency) * 1000);
+                                    int sr = Convert.ToInt32((s.sr * 1000.0));
+
+                                    if (RxList.Items[rx].SubItems[9].Text == "Minitioune" | RxList.Items[rx].SubItems[9].Text == "WinterHill")
+                                    {
+                                        tune_minitioune(rx, freq, sr);
+                                    }
+                                    if (RxList.Items[rx].SubItems[9].Text == "Ryde")
+                                    {
+                                        tune_ryde(freq, sr, IPAddress.Parse(RxList.Items[rx].SubItems[0].Text), Convert.ToInt16(RxList.Items[rx].SubItems[1].Text), RxList.Items[rx].SubItems[10].Text);
+                                    }
                                 }
-                                if (RxList.Items[rx].SubItems[9].Text == "Ryde")
-                                {
-                                    tune_ryde(freq, sr, IPAddress.Parse(RxList.Items[rx].SubItems[0].Text), Convert.ToInt16(RxList.Items[rx].SubItems[1].Text), RxList.Items[rx].SubItems[10].Text);
-                                }    
                             }
                         }
                     }
